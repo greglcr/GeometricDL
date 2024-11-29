@@ -17,16 +17,46 @@ with open(osp.join(path, edges_file)) as file:
         edge = line.split(', ')
         edges.append([int(edge[0]), int(edge[1])])
 
-my_graph = nx.Graph()
-graph_id = 10
+nb_graph = np.unique(node_graph).shape[0]
+my_graphs = [nx.Graph() for i in range(nb_graph)]
+print(nb_graph)
 
-for i in range(node_graph.shape[0]):
+maxi_graph = 0
+id_maxi_graph = -1
+
+
+""""
+for graph_id in range(nb_graph):
     if node_graph[i] == graph_id:
-        my_graph.add_node(i)
+        my_graphs[graph_id].add_node(i)
+        if my_graphs[graph_id].number_of_nodes() > maxi_graph:
+            maxi_graph = my_graphs[graph_id].number_of_nodes()
+            id_maxi_graph = graph_id
+
+    for i in range(len(edges)):
+        if node_graph[edges[i][0]] == graph_id and node_graph[edges[i][1]] == graph_id:
+            my_graphs[graph_id].add_edge(edges[i][0], edges[i][1])
+
+"""
+
+for i_node in range(node_graph.shape[0]):
+    graph_id = node_graph[i_node]
+    my_graphs[graph_id].add_node(i_node)
+    if my_graphs[graph_id].number_of_nodes() > maxi_graph:
+        maxi_graph = my_graphs[graph_id].number_of_nodes()
+        id_maxi_graph = graph_id
 
 for i in range(len(edges)):
-    if node_graph[edges[i][0]] == graph_id and node_graph[edges[i][1]] == graph_id:
-        my_graph.add_edge(edges[i][0], edges[i][1])
+    graph_id = node_graph[edges[i][0]]
+    my_graphs[graph_id].add_edge(edges[i][0], edges[i][1])
 
-fileName = 'true_graph_' + str(graph_id) + ".graphml"
-nx.write_graphml_lxml(my_graph, fileName)
+print(maxi_graph)
+print(id_maxi_graph)
+print(graph_label[id_maxi_graph])
+
+fileName = 'true_graph_' + str(id_maxi_graph) + ".graphml"
+nx.write_graphml_lxml(my_graphs[id_maxi_graph], fileName)
+
+"""
+Est-ce qu'un label de 0 veut dire vrai news ou fake news?
+"""
