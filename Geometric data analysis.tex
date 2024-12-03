@@ -112,7 +112,19 @@ Mean pooling aggregates the node-level embeddings into a single graph-level feat
 The graph-level representation is passed through the following layers:
 - A dense layer reduces the feature dimension to 32.
 - A final output layer with 2 units performs binary classification (fake/true news).
-
+\begin{table*}[t]
+    \centering
+    \caption{Dataset Statistics}
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Dataset} & \textbf{\#Graphs (\#Fake)} & \textbf{\#Total Nodes} & \textbf{\#Total Edges} & \textbf{\#Avg. Nodes per Graph} \\
+        \midrule
+        Politifact (POL) & 314 (157) & 41,054 & 40,740 & 131 \\
+        Gossipcop (GOS)  & 5464 (2732) & 314,262 & 308,798 & 58 \\
+        \bottomrule
+    \end{tabular}
+    \label{tab:data_statistics}
+\end{table*}
 \textbf{Loss and Optimization:}  
 - The model is trained using hinge loss, as it outperformed cross-entropy in early experiments.
 - AMSGrad is used as the optimizer, with a learning rate of \( 5 \times 10^{-4} \).
@@ -181,7 +193,7 @@ Our implementation is publicly accessible here. We employed the model architectu
 
 In this study, we leverage URL-wise classification to determine the veracity of a news story by aggregating information from all Twitter cascades associated with a given URL. This approach aligns naturally with the organic structure of our dataset, which is inherently organized at the URL level. When utilizing all available features, the model achieved a robust Area Under the Receiver Operating Characteristic curve (AUC-ROC) score of 96\%, underscoring the efficacy of feature integration in enhancing classification performance.
 
-\textbf{Data:} The dataset used by Marti et al. is not publicly available. Instead, we leveraged the publicly accessible dataset introduced by Dou et al., which differs slightly in its construction. Specifically, each news diffusion on Twitter is modeled as an undirected graph, with the news itself serving as the root node (rather than the tweet citing it). Nodes directly connected to the root represent tweets that reference the news URL, while the edges between these nodes capture the retweet relationships of those initial tweets.
+\textbf{Data:} The dataset used by Marti et al. is not publicly available. Instead, we leveraged the publicly accessible dataset introduced by \cite{10.1145/3404835.3462990}, which differs slightly in its construction. Specifically, each news diffusion on Twitter is modeled as an undirected graph, with the news itself serving as the root node (rather than the tweet citing it). Nodes directly connected to the root represent tweets that reference the news URL, while the edges between these nodes capture the retweet relationships of those initial tweets.
 
 \textbf{Node Features:} In addition to the graph structure, we incorporated various node features derived from the User Preference-aware Fake News Detection dataset (UPFD). These features include:
 \begin{itemize}
@@ -202,13 +214,13 @@ Figure~\ref{fig:url_cascade} provides a visualization of an example URL cascade 
 \section{Experiments}
 
 
-This study follows the methodology of Monti et al. to explore the impact of different feature combinations on the performance of our model using the UPFD dataset. We performed an ablation study to evaluate how various feature sets contribute to model performance. The results, shown in Figure~\ref{fig:ablation_results}, reveal significant improvements as specific features are incorporated into the model.
+This study follows the methodology of \cite{monti2019fakenewsdetectionsocial} to explore the impact of different feature combinations on the performance of our model using the UPFD dataset. We performed an ablation study to evaluate how various feature sets contribute to model performance. The results, shown in Figure~\ref{fig:ablation_results}, reveal significant improvements as specific features are incorporated into the model.
 
 The inclusion of user profile and preferences resulted in an ROC-AUC score of 0.88, demonstrating the importance of user-specific contextual information. Further isolating the profile features led to a substantial increase in performance to 0.93, underscoring their predictive strength. When all features—profile, preferences, content, and interactions—were combined, the model achieved a score of 0.96, showcasing the positive impact of a diverse feature set.
 
 However, contrary to expectations, the best performance of 0.98 was observed when only the profile and content features were used together. This result suggests that while adding additional features provides some improvements, the combination of profile and content features outperforms the full set of four features. The inclusion of all four features introduced some redundancy, which may have detracted from the model’s overall performance. 
 
-These findings align with the observations made by Monti et al., where feature selection played a pivotal role in enhancing model accuracy. In our case, the profile and content features, when combined, provided the most effective representation of both user-specific and tweet-specific contexts, thereby achieving the highest predictive accuracy. This highlights the importance of optimizing feature combinations and avoiding unnecessary complexity, which can lead to diminishing returns. 
+These findings align with the observations made by \cite{monti2019fakenewsdetectionsocial}, where feature selection played a pivotal role in enhancing model accuracy. In our case, the profile and content features, when combined, provided the most effective representation of both user-specific and tweet-specific contexts, thereby achieving the highest predictive accuracy. This highlights the importance of optimizing feature combinations and avoiding unnecessary complexity, which can lead to diminishing returns. 
 
 Overall, this study emphasizes the critical role of strategic feature engineering. By carefully selecting the most informative features—particularly profile and content—we were able to achieve optimal performance without the added complexity of redundant features.
 
@@ -256,7 +268,7 @@ This study presents several limitations that warrant consideration, particularly
 
     \item \textbf{Temporal Degradation}: Findings indicate that the model's performance degrades over time, highlighting the necessity of frequent retraining to sustain accuracy, especially in the context of rapidly evolving news ecosystems and information landscapes.
 
-    \item \textbf{Dataset Comparability}: Unlike Monti et al., who utilized a fact-checker-verified Twitter dataset, this study employs a dataset introduced by Dou et al., which represents news diffusion using undirected graphs with news URLs as root nodes. This methodological variation might constrain the direct comparability of results across different datasets, complicating broader benchmarking efforts.
+    \item \textbf{Dataset Comparability}: Unlike \cite{monti2019fakenewsdetectionsocial}, who utilized a fact-checker-verified Twitter dataset, this study employs a dataset introduced by \cite{10.1145/3404835.3462990}, which represents news diffusion using undirected graphs with news URLs as root nodes. This methodological variation might constrain the direct comparability of results across different datasets, complicating broader benchmarking efforts.
 
     \item \textbf{Dependence on Graph Richness and Data Quality}: The effectiveness of the model is contingent on the availability of detailed graph structures and high-quality user profile features. This dependency could limit the model’s generalizability to other datasets or platforms characterized by sparse, noisy, or incomplete data.
 \end{itemize}
@@ -273,7 +285,7 @@ The effectiveness of the proposed model was evaluated using a dataset that intro
 
 The model demonstrated strong predictive capabilities, achieving a 96\% AUC-ROC for URL-wise classification when leveraging the full suite of features. This result underscores the robustness of integrating user profiles, content attributes, and propagation patterns. Notably, these findings align with prior studies emphasizing the efficacy of such multifaceted approaches.
 
-Interestingly, the dataset analysis revealed nuanced interactions among the feature sets. While propagation patterns and user profiles were corroborated as critical components consistent with Monti et al.'s observations, the combination of profile and content features alone yielded the highest AUC-ROC at 98\%. This suggests potential redundancies in the simultaneous integration of all feature sets. These insights indicate that strategic feature selection may enhance computational efficiency without compromising accuracy.
+Interestingly, the dataset analysis revealed nuanced interactions among the feature sets. While propagation patterns and user profiles were corroborated as critical components consistent with \cite{monti2019fakenewsdetectionsocial}'s observations, the combination of profile and content features alone yielded the highest AUC-ROC at 98\%. This suggests potential redundancies in the simultaneous integration of all feature sets. These insights indicate that strategic feature selection may enhance computational efficiency without compromising accuracy.
 
 \subsection{Feature Analysis}
 
