@@ -1,6 +1,7 @@
 import networkx as nx
 import os.path as osp
 import numpy as np
+import matplotlib.pyplot as plt
 
 _file_ = '..'
 file = _file_
@@ -19,7 +20,6 @@ with open(osp.join(path, edges_file)) as file:
 
 nb_graph = np.unique(node_graph).shape[0]
 my_graphs = [nx.Graph() for i in range(nb_graph)]
-print(nb_graph)
 
 maxi_graph = 0
 id_maxi_graph = -1
@@ -39,12 +39,23 @@ for i in range(len(edges)):
     my_graphs[graph_id].add_edge(edges[i][0], edges[i][1])
     my_graphs[graph_id].nodes[edges[i][1]]['prof'] = my_graphs[graph_id].nodes[edges[i][0]]['prof'] + 1
 
-for i_node in range(node_graph.shape[0]):
-    my_graphs[node_graph[i_node]].nodes[i_node]['neg_prof'] = -my_graphs[node_graph[i_node]].nodes[i_node]['prof']
+print("Nombre de graphe :", nb_graph)
+print("Nombre total de noeud :", node_graph.shape[0])
+print("Nombre total d'edges :", len(edges))
 
-print(maxi_graph)
-print(id_maxi_graph)
-print(graph_label[id_maxi_graph])
+nb_nodes_per_graph = []
+for i in range(nb_graph):
+    nb_nodes_per_graph.append(my_graphs[i].number_of_nodes())
+nb_nodes_per_graph.sort()
 
-fileName = 'true_graph_' + str(id_maxi_graph) + ".graphml"
-nx.write_graphml_lxml(my_graphs[id_maxi_graph], fileName)
+for_count = [nb_nodes_per_graph.count(i + 1) for i in range(max(nb_nodes_per_graph))]
+x_value = [i for i in range(max(nb_nodes_per_graph) + 1)]
+for_count.append(0)
+
+plt.bar(x_value, for_count, width=1)
+plt.ylim(0, max(for_count) + 1)
+plt.margins(0)
+plt.axhline(0, color='black', linewidth=0.8)
+plt.xlabel('Size of URL cascade')
+plt.ylabel('Number of cascade')
+plt.savefig('Diagramme_bâton_cascades.png')
