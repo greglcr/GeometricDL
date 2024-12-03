@@ -189,7 +189,7 @@ Further analysis revealed that cascade size significantly impacts classification
 
 \section{Implementation}
 
-Our implementation is publicly accessible here. We employed the model architecture described in Marti et al. (2009), as detailed in Section 3.2, with a modification to the batch size, which we set to 128 instead of 1 to improve training efficiency and handle larger data batches.
+Our implementation is publicly accessible here \cite{github}. We employed the model architecture described in \cite{monti2019fakenewsdetectionsocial} as detailed in Section 3.2, with a modification to the batch size, which we set to 128 instead of 1 to improve training efficiency and handle larger data batches.
 
 In this study, we leverage URL-wise classification to determine the veracity of a news story by aggregating information from all Twitter cascades associated with a given URL. This approach aligns naturally with the organic structure of our dataset, which is inherently organized at the URL level. When utilizing all available features, the model achieved a robust Area Under the Receiver Operating Characteristic curve (AUC-ROC) score of 96\%, underscoring the efficacy of feature integration in enhancing classification performance.
 
@@ -210,7 +210,7 @@ In this study, we leverage URL-wise classification to determine the veracity of 
 \begin{figure}
     \centering
     \includegraphics[scale=0.3]{graph_528_label_0_better_representation.png}
-    \caption{Graph representing an URL cascade. Color depends on depth (i.e. number of reweet) and size represents degree. The big node red in the center is the first tweet referencing to the URL}
+    \caption{Graph representing an URL cascade. Color depends on depth (i.e. number of reweet) and size represents degree. The big node red is the URL, node it pink tweets containing URL, node in blue first retweet, ...}
     \label{fig:url_cascade}
 \end{figure}
 
