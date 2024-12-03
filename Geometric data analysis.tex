@@ -57,7 +57,7 @@
 
 % Updated abstract
 \begin{abstract}
-Social media platforms have revolutionized news consumption but have simultaneously amplified the spread of fake news, posing critical challenges to information integrity. Traditional detection methods relying on content analysis struggle with nuanced misinformation requiring contextual or common-sense understanding. This paper introduces a novel geometric deep learning framework leveraging graph-based propagation features for fake news detection. By analyzing propagation dynamics, user behaviors, and network structures, our model achieves language independence and resistance to adversarial attacks. Tested on verified Twitter datasets spanning 2013–2018, our method attains 92.7\% ROC AUC in URL-wise classification and demonstrates reliable early detection within hours of news dissemination. This study highlights the potential of propagation-based detection as a robust alternative or complement to content-focused approaches, with applications extending to scalable, real-time solutions for combating misinformation on social media.
+This report looks at the application of GNN to detect fake news based on \cite{monti2019fakenewsdetectionsocial}. Social media platforms have revolutionized news consumption but have simultaneously amplified the spread of fake news, posing critical challenges to information integrity. Traditional detection methods relying on content analysis struggle with nuanced misinformation requiring contextual or common-sense understanding. This paper introduces a novel geometric deep learning framework leveraging graph-based propagation features for fake news detection. By analyzing propagation dynamics, user behaviors, and network structures, our model achieves language independence and resistance to adversarial attacks. Tested on verified Twitter datasets spanning 2013–2018, our method attains 92.7\% ROC AUC in URL-wise classification and demonstrates reliable early detection within hours of news dissemination. This study highlights the potential of propagation-based detection as a robust alternative or complement to content-focused approaches, with applications extending to scalable, real-time solutions for combating misinformation on social media.
 \end{abstract}
 
 \maketitle
@@ -189,7 +189,7 @@ Further analysis revealed that cascade size significantly impacts classification
 
 \section{Implementation}
 
-Our implementation is publicly accessible here. We employed the model architecture described in Marti et al. (2009), as detailed in Section 3.2, with a modification to the batch size, which we set to 128 instead of 1 to improve training efficiency and handle larger data batches.
+Our implementation is publicly accessible here \cite{github}. We employed the model architecture described in \cite{monti2019fakenewsdetectionsocial} as detailed in Section 3.2, with a modification to the batch size, which we set to 128 instead of 1 to improve training efficiency and handle larger data batches.
 
 In this study, we leverage URL-wise classification to determine the veracity of a news story by aggregating information from all Twitter cascades associated with a given URL. This approach aligns naturally with the organic structure of our dataset, which is inherently organized at the URL level. When utilizing all available features, the model achieved a robust Area Under the Receiver Operating Characteristic curve (AUC-ROC) score of 96\%, underscoring the efficacy of feature integration in enhancing classification performance.
 
@@ -210,7 +210,7 @@ In this study, we leverage URL-wise classification to determine the veracity of 
 \begin{figure}
     \centering
     \includegraphics[scale=0.3]{graph_528_label_0_better_representation.png}
-    \caption{Graph representing an URL cascade. Color depends on depth (i.e. number of reweet) and size represents degree. The big node red in the center is the first tweet referencing to the URL}
+    \caption{Graph representing an URL cascade. Color depends on depth (i.e. number of reweet) and size represents degree. The big node red is the URL, node it pink tweets containing URL, node in blue first retweet, ...}
     \label{fig:url_cascade}
 \end{figure}
 
