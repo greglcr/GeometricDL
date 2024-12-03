@@ -207,7 +207,21 @@ In this study, we leverage URL-wise classification to determine the veracity of 
     \end{enumerate}
 \end{itemize}
 
-Figure~\ref{fig:url_cascade} provides a visualization of an example URL cascade from our dataset, highlighting its graph representation. Table~\ref{tab:data_statistics} summarizes the dataset statistics, offering a detailed overview of its composition and key characteristics.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{graph_528_label_0_better_representation.png}
+    \caption{Graph representing an URL cascade. Color depends on depth (i.e. number of reweet) and size represents degree. The big node red in the center is the first tweet referencing to the URL}
+    \label{fig:url_cascade}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{Diagramme_bâton_cascades.png}
+    \caption{Breakdown of the number of cascading URLs by size (number of nodes)}
+    \label{fig:graph_repartition}
+\end{figure}
+
+Figure \ref{fig:url_cascade} provides a visualization of an example URL cascade from our dataset, highlighting its graph representation. Table~\ref{tab:data_statistics} and Figure \ref{fig:graph_repartition} summarizes the dataset statistics, offering a detailed overview of its composition and key characteristics.
 
 
 

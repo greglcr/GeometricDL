@@ -24,31 +24,23 @@ print(nb_graph)
 maxi_graph = 0
 id_maxi_graph = -1
 
-
-""""
-for graph_id in range(nb_graph):
-    if node_graph[i] == graph_id:
-        my_graphs[graph_id].add_node(i)
-        if my_graphs[graph_id].number_of_nodes() > maxi_graph:
-            maxi_graph = my_graphs[graph_id].number_of_nodes()
-            id_maxi_graph = graph_id
-
-    for i in range(len(edges)):
-        if node_graph[edges[i][0]] == graph_id and node_graph[edges[i][1]] == graph_id:
-            my_graphs[graph_id].add_edge(edges[i][0], edges[i][1])
-
-"""
-
 for i_node in range(node_graph.shape[0]):
     graph_id = node_graph[i_node]
-    my_graphs[graph_id].add_node(i_node)
-    if my_graphs[graph_id].number_of_nodes() > maxi_graph:
+    prof = -1
+    if my_graphs[graph_id].number_of_nodes() == 0:
+        prof = 0
+    my_graphs[graph_id].add_node(i_node, prof=prof, neg_prof=0)
+    if my_graphs[graph_id].number_of_nodes() > maxi_graph and graph_label[graph_id] == 1:
         maxi_graph = my_graphs[graph_id].number_of_nodes()
         id_maxi_graph = graph_id
 
 for i in range(len(edges)):
     graph_id = node_graph[edges[i][0]]
     my_graphs[graph_id].add_edge(edges[i][0], edges[i][1])
+    my_graphs[graph_id].nodes[edges[i][1]]['prof'] = my_graphs[graph_id].nodes[edges[i][0]]['prof'] + 1
+
+for i_node in range(node_graph.shape[0]):
+    my_graphs[node_graph[i_node]].nodes[i_node]['neg_prof'] = -my_graphs[node_graph[i_node]].nodes[i_node]['prof']
 
 print(maxi_graph)
 print(id_maxi_graph)
