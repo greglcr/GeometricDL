@@ -128,7 +128,6 @@ The graph-level representation is passed through the following layers:
 \textbf{Loss and Optimization:}  
 - The model is trained using hinge loss, as it outperformed cross-entropy in early experiments.
 - AMSGrad is used as the optimizer, with a learning rate of \( 5 \times 10^{-4} \).
-- Dropout regularization is applied to fully connected layers to prevent overfitting.
 - Training is performed for 25,000 iterations for URL-wise classification and 50,000 iterations for cascade-wise classification, with a mini-batch size of 1.
 
 \textbf{Early Propagation Settings:}  
@@ -216,17 +215,24 @@ In this study, we leverage URL-wise classification to determine the veracity of 
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.3]{Diagramme_bâton_cascades.png}
+    \includegraphics[scale=0.5]{Diagramme_bâton_cascades.png}
     \caption{Breakdown of the number of cascading URLs by size (number of nodes)}
     \label{fig:graph_repartition}
 \end{figure}
+
+
 
 Figure \ref{fig:url_cascade} provides a visualization of an example URL cascade from our dataset, highlighting its graph representation. Table~\ref{tab:data_statistics} and Figure \ref{fig:graph_repartition} summarizes the dataset statistics, offering a detailed overview of its composition and key characteristics.
 
 
 
 \section{Experiments}
-
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.35]{roc_results.png}
+    \caption{Ablation study on our implementation}
+    \label{fig:ablation_results}
+\end{figure}
 
 This study follows the methodology of \cite{monti2019fakenewsdetectionsocial} to explore the impact of different feature combinations on the performance of our model using the UPFD dataset. We performed an ablation study to evaluate how various feature sets contribute to model performance. The results, shown in Figure~\ref{fig:ablation_results}, reveal significant improvements as specific features are incorporated into the model.
 
@@ -242,7 +248,14 @@ Overall, this study emphasizes the critical role of strategic feature engineerin
 
 \subsection{Random Features and the Role of Graph Propagation in Fake News Diffusion}
 
-Building on the idea of propagation and the patterns of tweet diffusion, we explored the effect of using random features in our analysis. This approach aimed to isolate the structural properties of the graph from the influence of carefully crafted features. Notably, despite the randomness of the features, the AUC-ROC score achieved was 0.67, suggesting that the graph itself inherently encodes valuable information.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.35]{roc_random.png}
+    \caption{ROC AUC of a model with random features on nodes.}
+    \label{fig:roc_random}
+\end{figure}
+
+Building on the idea of propagation and the patterns of tweet diffusion, we explored the effect of using random features in our analysis. This approach aimed to isolate the structural properties of the graph from the influence of carefully crafted features. Notably, despite the randomness of the features, the AUC-ROC score achieved was 0.67 (see ~\ref{fig:roc_random}), suggesting that the graph itself inherently encodes valuable information.
 
 This finding underscores the critical role of graph structure in distinguishing fake news from legitimate content. The propagation patterns unique to fake news dissemination appear to manifest in the graph topology, independent of specific node-level attributes. For instance, fake news tends to propagate through distinct clusters or patterns of re-sharing that differ significantly from genuine news diffusion. Such differences are captured by the graph's structural properties, reinforcing the idea that graph-based representations can be highly effective for tasks like fake news detection.
 
@@ -254,7 +267,14 @@ The implications of these results are twofold:
 
 \subsection{Impact of Regularization (Weight Decay) on Model Performance}
 
-Incorporating regularization techniques, particularly weight decay, was another avenue we explored to improve the robustness and generalization of our models. Weight decay, by penalizing large weights, aims to prevent overfitting and encourage smoother decision boundaries. However, our findings revealed that regularization did not consistently improve the AUC-ROC performance across the majority of models. In some cases, it even led to a decrease in AUC-ROC scores.
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.35]{roc_weight_decay.png}
+    \caption{Ablation study with weight decay.}
+    \label{fig:roc_decay}
+\end{figure}
+
+Incorporating regularization techniques, particularly weight decay, was another avenue we explored to improve the robustness and generalization of our models. Weight decay, by penalizing large weights, aims to prevent overfitting and encourage smoother decision boundaries. However, our findings revealed that regularization did not consistently improve the AUC-ROC performance across the majority of models. In some cases, it even led to a decrease in AUC-ROC scores. Results are depicted in ~\ref{fig:roc_decay}.
 
 This counterintuitive outcome suggests that weight decay may lead to over-regularization in the context of our models. By overly constraining the parameter space, weight decay might prevent the model from capturing subtle patterns in the data that are crucial for distinguishing between fake and genuine news. These results align with the hypothesis that excessive regularization can hinder a model's ability to effectively learn from the data, especially when the underlying patterns are complex and nuanced, as is often the case with fake news detection.
 
